@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# wait-for-mysql.sh
+
+set -e
+
+host="$1"
+shift
+cmd="$@"
+
+until mysql -h "$host" -u${DATABASE_ADMIN_USER} -p${DATABASE_ADMIN_PASSWORD} rundeckdb -e 'select 1'; do
+  >&2 echo "MariaDB is unavailable, sleeping"
+  sleep 1
+done
+
+>&2 echo "MariaDB is up - starting Rundeck"
+exec $cmd
+

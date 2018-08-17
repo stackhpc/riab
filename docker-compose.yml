@@ -1,0 +1,30 @@
+version: '3'
+services:
+  mariadb:
+    image: mariadb:10.3.8
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: changeme
+      MYSQL_DATABASE: rundeckdb
+      MYSQL_USER: rundeck
+      MYSQL_PASSWORD: changeme
+  rundeck:
+    build: rundeck
+    depends_on:
+      - mariadb
+    command: ["/opt/boot", "mariadb", "/opt/run"]
+    ports:
+      - 4440:4440
+    links:
+      - mariadb
+    environment:
+      NO_LOCAL_MYSQL: "true"
+      RUNDECK_STORAGE_PROVIDER: db
+      RUNDECK_PROJECT_STORAGE: db
+      DATABASE_URL: jdbc:mysql://mariadb/rundeckdb
+      DATABASE_ADMIN_USER: root
+      DATABASE_ADMIN_PASSWORD: changeme
+      RUNDECK_PASSWORD: changeme
+      EXTERNAL_SERVER_URL: http://bluetip:4440
+

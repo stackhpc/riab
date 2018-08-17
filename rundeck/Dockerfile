@@ -16,7 +16,7 @@ ENV SERVER_URL=https://localhost:4443 \
 RUN export DEBIAN_FRONTEND=noninteractive && \
     echo "deb http://ftp.debian.org/debian stretch-backports main" >> /etc/apt/sources.list && \
     apt-get -qq update && \
-    apt-get -qqy install -t stretch-backports --no-install-recommends bash openjdk-8-jre-headless ca-certificates-java supervisor procps sudo ca-certificates openssh-client  mysql-client pwgen curl git uuid-runtime parallel jq && \
+    apt-get -qqy install -t stretch-backports --no-install-recommends ansible bash openjdk-8-jre-headless ca-certificates-java supervisor procps sudo ca-certificates openssh-client  mysql-client pwgen curl git uuid-runtime parallel jq && \
     cd /tmp/ && \
     curl -Lo /tmp/rundeck.deb http://dl.bintray.com/rundeck/rundeck-deb/rundeck_3.0.1.20180803-1.201808032143_all.deb && \
     echo '6e86290b1394ab50e9886b9158cba28b806f440b58a2d1aa08ebe81c4b6c1862  rundeck.deb' > /tmp/rundeck.sig && \

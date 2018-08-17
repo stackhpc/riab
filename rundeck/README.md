@@ -1,7 +1,14 @@
-rundeck
+Rundeck
 ==============
 
 This repository contains the source for the [Rundeck](http://rundeck.org/) [docker](https://docker.io) image.
+
+This is based on the work in https://github.com/jjethwa/rundeck, but without
+building MariaDB and Postgresql into the image, instead wrapping it up with
+Docker Compose in order to include the external database dependancy as a
+dedicated container.
+
+Some of the documentation below may or may not still apply.
 
 # Image details
 
@@ -16,10 +23,6 @@ This repository contains the source for the [Rundeck](http://rundeck.org/) [dock
 
 
 # Automated build
-
-```
-docker pull jordan/rundeck
-```
 
 # Usage
 Start a new container and bind to host's port 4440

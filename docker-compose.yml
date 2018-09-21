@@ -1,3 +1,4 @@
+# vi: set ts=2 sts=2 sw=2 et ft=yaml :
 version: '3'
 services:
   mariadb:
@@ -9,22 +10,30 @@ services:
       MYSQL_DATABASE: rundeckdb
       MYSQL_USER: rundeck
       MYSQL_PASSWORD: changeme
+    command: ['--connect-timeout=120']
+    volumes:
+      - dbdata:/var/lib/mysql
   rundeck:
-    build: rundeck
+    build: rundeck-ansible
     depends_on:
       - mariadb
-    command: ["/opt/boot", "mariadb", "/opt/run"]
     ports:
       - 4440:4440
     links:
       - mariadb
+    volumes:
+      - ./inventory:/inventory
+      - ./realm.properties:/home/rundeck/server/config/realm.properties
+      - ./Deploy.aclpolicy:/home/rundeck/etc/Deploy.aclpolicy
+      - data:/home/rundeck/server/data
     environment:
-      NO_LOCAL_MYSQL: "true"
-      RUNDECK_STORAGE_PROVIDER: db
-      RUNDECK_PROJECT_STORAGE: db
-      DATABASE_URL: jdbc:mysql://mariadb/rundeckdb
-      DATABASE_ADMIN_USER: root
-      DATABASE_ADMIN_PASSWORD: changeme
-      RUNDECK_PASSWORD: changeme
-      EXTERNAL_SERVER_URL: http://bluetip:4440
+      RUNDECK_DATABASE_DRIVER: com.mysql.jdbc.Driver
+      RUNDECK_ADMIN_PASSWORD: changeme
+      RUNDECK_DATABASE_URL: jdbc:mysql://mariadb/rundeckdb?autoReconnect=true&useSSL=false
+      RUNDECK_DATABASE_USERNAME: rundeck
+      RUNDECK_DATABASE_PASSWORD: changeme
+
+volumes:
+  data:
+  dbdata:
 

@@ -1,0 +1,39 @@
+description: Default access for operational activities
+context:
+  project: '.*' # all projects
+for:
+  resource:
+    - equals:
+        kind: job
+      allow: [read]
+    - equals:
+        kind: node
+      allow: [read,refresh]
+    - equals:
+        kind: event
+      allow: [read]
+  adhoc:
+    - allow: [read,run,runAs,kill,killAs]
+  job:
+    - allow: [read,run,runAs,kill,killAs]
+  node:
+    - allow: [read,run]
+by:
+  group: ROLE_deploy
+  
+---
+
+description: Operational access control for Rundeck
+context:
+  application: 'rundeck'
+for:
+  resource:
+    - equals:
+        kind: project
+      allow: [read]
+  project:
+    - match:
+        name: '.*'
+      allow: [read]
+by:
+  group: ROLE_deploy
